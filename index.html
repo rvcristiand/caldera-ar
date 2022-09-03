@@ -30,6 +30,7 @@
 			import * as THREE from 'three';
 		  import { ARButton } from 'https://unpkg.com/three@0.143.0/examples/jsm/webxr/ARButton.js';
 		  import { GLTFLoader } from 'https://unpkg.com/three@0.143.0/examples/jsm/loaders/GLTFLoader.js';
+		  import { DRACOLoader } from 'https://unpkg.com/three@0.143.0/examples/jsm/loaders/DRACOLoader.js';
 		  // import { main } from './modules/main.js';
 
 			let camera, scene, renderer;
@@ -59,12 +60,18 @@
 			    // model
 			    var group = new THREE.Group();
 			    group.position.setZ( -0.3 );
-			    group.scale.set( 0.1, 0.1, 0.1 );
+			    const scale = 0.1;
+			    group.scale.set( scale, scale, scale );
 			    scene.add( group );
 			    // main( scene );  // main( group );
 
 			    const gltfLoader = new GLTFLoader();
-			    gltfLoader.load( 'java_test.glb', function ( gltf ) {
+
+			    const dracoLoader = new DRACOLoader();
+			    dracoLoader.setDecoderPath( './examples/js/libs/draco/' );
+			    gltfLoader.setDRACOLoader( dracoLoader );
+			    
+			    gltfLoader.load( 'fire.glb', function ( gltf ) {
 				const bones = gltf.scene;
 
 				bones.traverse( child => {
