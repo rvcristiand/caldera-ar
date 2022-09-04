@@ -23,12 +23,11 @@
 			}
 		</script>
 
-		<!-- <script type="module" src='./modules/main.js'></script> -->
+		<script type="module" src='./modules/main.js'></script>
 
 		<script type="module">
-
-			import * as THREE from 'three';
-		  import { ARButton } from 'https://unpkg.com/three@0.143.0/examples/jsm/webxr/ARButton.js';
+		  import * as THREE from 'three';
+			import { ARButton } from 'https://unpkg.com/three@0.143.0/examples/jsm/webxr/ARButton.js';
 		  import { GLTFLoader } from 'https://unpkg.com/three@0.143.0/examples/jsm/loaders/GLTFLoader.js';
 		  import { DRACOLoader } from 'https://unpkg.com/three@0.143.0/examples/jsm/loaders/DRACOLoader.js';
 		  // import { main } from './modules/main.js';
@@ -63,31 +62,12 @@
 			    const scale = 0.1;
 			    group.scale.set( scale, scale, scale );
 			    scene.add( group );
-			    // main( scene );  // main( group );
-
-			    const gltfLoader = new GLTFLoader();
-
-			    const dracoLoader = new DRACOLoader();
-			    dracoLoader.setDecoderPath( './examples/js/libs/draco/' );
-			    gltfLoader.setDRACOLoader( dracoLoader );
-			    
-			    gltfLoader.load( 'fire.glb', function ( gltf ) {
-				const bones = gltf.scene;
-
-				bones.traverse( child => {
-				    if ( child.material ) {
-				    	child.material.metalness = 0;
-					// child.material.color.set( 0xffffff );
-				    }
-				} );
-
-				// bones.material.color.set( 0xff0000 );
-
-				group.add( bones );
-
-				render();
-			    } );
-
+			    addGLTFModel( 'fire.glb', group );
+			    addGLTFModel( 'amarillo.glb', group );
+			    addGLTFModel( 'alum.glb', group );
+			    addGLTFModel( 'bluetubeswa.glb', group );
+			    addGLTFModel( 'black.glb', group );
+			    addGLTFModel( 'gris.glb', group );
 
 				//
 
@@ -103,24 +83,36 @@
 
 				//
 
-
-				// function onSelect() {
-
-				// 	const material = new THREE.MeshPhongMaterial( { color: 0xffffff * Math.random() } );
-				// 	const mesh = new THREE.Mesh( geometry, material );
-				// 	mesh.position.set( 0, 0, - 0.3 ).applyMatrix4( controller.matrixWorld );
-				// 	mesh.quaternion.setFromRotationMatrix( controller.matrixWorld );
-				// 	scene.add( mesh );
-
-				// }
-
-				// controller = renderer.xr.getController( 0 );
-				// controller.addEventListener( 'select', onSelect );
-				// scene.add( controller );
-
 				window.addEventListener( 'resize', onWindowResize );
 
 			}
+
+		  function addGLTFModel( file, scene ) {
+		      /*
+			Add GLTF model to scene
+		      */
+		      
+		      const gltfLoader = new GLTFLoader();
+
+		      const dracoLoader = new DRACOLoader();
+		      dracoLoader.setDecoderPath( './examples/js/libs/draco/' );
+		      gltfLoader.setDRACOLoader( dracoLoader );
+		      
+		      gltfLoader.load( './models/' + file, function ( gltf ) {
+			  const model = gltf.scene;
+
+			  model.traverse( child => {
+			      if ( child.material ) {
+				  child.material.metalness = 0;
+			      }
+			  } );
+
+			  scene.add( model );
+
+			  render();
+		      } );
+		      
+		  }
 
 			function onWindowResize() {
 
@@ -130,8 +122,6 @@
 				renderer.setSize( window.innerWidth, window.innerHeight );
 
 			}
-
-			//
 
 			function animate() {
 
