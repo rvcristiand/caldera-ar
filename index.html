@@ -26,6 +26,7 @@
 		  }
 		</script>
 
+		<script type="text/javascript" src="./build/dat.gui.min.js"></script>
 		<!-- <script type="module" src='./modules/main.js'></script> -->
 
 		<script type="module">
@@ -33,10 +34,15 @@
 		  import { ARButton } from 'ARButton';
 		  import { GLTFLoader } from 'GLTFLoader';
 		  import { DRACOLoader } from 'DRACOLoader';
+		  // import * as dat from 'dat.gui';
 		  // import { main } from './modules/main.js';
 
 			let camera, scene, renderer;
 			let controller;
+
+		  var config = {
+		      fire: true
+		  }
 
 			init();
 			animate();
@@ -82,12 +88,17 @@
 
 				//
 
-				document.body.appendChild( ARButton.createButton( renderer ) );
+			    document.body.appendChild( ARButton.createButton( renderer, {
+                                optionalFeatures: ['dom-overlay', 'dom-overlay-for-handheld-ar'],
+                                domOverlay: {root: document.body}
+			    } ) );
 
 				//
 
 				window.addEventListener( 'resize', onWindowResize );
 
+
+			    setupGUI();
 			}
 
 		  function addGLTFModel( file, scene ) {
@@ -115,6 +126,14 @@
 			  render();
 		      } );
 		      
+		  }
+
+		  function setupGUI() {
+		      const gui = new dat.GUI();
+		      var h;
+
+		      h = gui.addFolder( 'meshes' );
+		      h.add( config, 'fire' ).name( 'fire' ).onChange( alert( 'holi' ) );
 		  }
 
 			function onWindowResize() {
