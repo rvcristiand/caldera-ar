@@ -9,10 +9,6 @@
 	<body>
 	  <div id="wrapper">
 	    <div id="navbar" class="navbar">
-	      <!-- <div class="brand"> -->
-	      <!-- 	<\!-- <div class="logos"> -\-> -->
-	      <!-- 	<\!-- </div> -\-> -->
-	      <!-- </div> -->
 	      <a class="logo" href="https://www.ciaid.co/">
 		<img src="./images/ciaid.png" alt="ciaid">
 	      </a>
@@ -57,8 +53,14 @@
 			let controller;
 
 		  var config = {
-		      fire: true
-		  }
+		      'scale': 0.1,
+		      'fire': true,
+		      'amarillo': true,
+		      'alum': true,
+		      'bluetubeswa': true,
+		      'black': true,
+		      'gris': true
+		  };
 
 		  var set;
 
@@ -93,11 +95,11 @@
 			    // --bluetubeswa
 			    // --black
 			    // --gris
-			    var set = new THREE.Group( );
+			    set = new THREE.Group( );
 			    set.name = "set";
 
 			    set.position.setZ( -0.3 );
-			    const scale = 0.1;
+			    const scale = config[ 'scale' ];
 			    set.scale.set( scale, scale, scale );
 			    scene.add( set );
 
@@ -184,7 +186,41 @@
 
 		      h = gui.addFolder( 'set' );
 
-		      // h.add( config, 'fire' ).name( 'fire' ).onChange( alert( 'holi' ) );
+		      // fire
+		      h.add( config, 'fire' ).name( 'fire' ).onChange( fire => {
+			  set.getObjectByName( 'fire.glb' ).visible = fire;
+		      } );
+
+		      // amarillo
+		      h.add( config, 'amarillo' ).name( 'amarillo' ).onChange( amarillo => {
+			  set.getObjectByName( 'amarillo.glb' ).visible = amarillo;
+		      } );
+		      
+		      // alum
+		      h.add( config, 'alum' ).name( 'alum' ).onChange( alum => {
+			  set.getObjectByName( 'alum.glb' ).visible = alum;
+		      } );
+
+		      // bluetubeswa
+		      h.add( config, 'bluetubeswa' ).name( 'bluetubeswa' ).onChange( bluetubeswa => {
+			  set.getObjectByName( 'bluetubeswa.glb' ).visible = bluetubeswa;
+		      } );
+
+		      // black
+		      h.add( config, 'black' ).name( 'black' ).onChange( black => {
+			  set.getObjectByName( 'black.glb' ).visible = black;
+		      } );
+
+		      // gris
+		      h.add( config, 'gris' ).name( 'gris' ).onChange( gris => {
+			  set.getObjectByName( 'gris.glb' ).visible = gris;
+		      } );
+
+		      // scale
+		      gui.add( config, 'scale' ).name( 'scale' ).min( 0.001 ).max( 0.1 ).step( 0.001 ).onChange( scale => {
+			  set.scale.set( scale, scale, scale );
+		      } );
+
 		  }
 
 			function onWindowResize() {
