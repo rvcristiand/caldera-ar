@@ -1,11 +1,24 @@
+html {
+    width: 100%;
+    height: 100%;
+}
+
 body {
+    width: 100%;
+    height: 100%;
 	margin: 0;
-	background-color: #000;
+	background-color: #bbb;
 	color: #fff;
 	font-family: Monospace;
 	font-size: 13px;
 	line-height: 24px;
 	overscroll-behavior: none;
+}
+
+#wrapper {
+    /* display: flex; */
+    width: 100%;
+    height: 100%;
 }
 
 a {
@@ -17,25 +30,75 @@ a:hover {
 	text-decoration: underline;
 }
 
-button {
+Button {
 	cursor: pointer;
 	text-transform: uppercase;
 }
 
-#info {
+.navbar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 	position: absolute;
 	top: 0px;
-	width: 100%;
+	width: 146px;
+	height: 100%;
 	padding: 10px;
 	box-sizing: border-box;
-	text-align: center;
+	background-color: rgba(170, 170, 170, 0.8);
 	-moz-user-select: none;
 	-webkit-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
 	pointer-events: none;
-	z-index: 1; /* TODO Solve this in HTML */
+	z-index: 999; /* TODO Solve this in HTML */
 }
+
+/* .navbar .brand { */
+/*     display: flex; */
+/*     /\* height: 146px; *\/ */
+/*     /\* width: fit-content; *\/ */
+/* } */
+
+.navbar .logo {
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 100%;
+    padding: 5px;
+}
+
+.logo img {
+    max-width: 100%;
+}
+
+.navbar .buttons {
+    display: flex;
+    justify-content: center;
+    /* position: absolute; */
+    width: 100%;
+}
+
+/* .brand a { */
+/*     display: inline-block; */
+/* } */
+
+/* .brand .logos { */
+/*     display: flex; */
+/*     flex-direction: column; */
+/*     position: relative; */
+/*     height: 100%;     */
+/*     /\* max-height: 56px; *\/ */
+/* } */
+
+.brand span {
+    padding: 5px 10px;
+    position: absolute;
+    top: 50%;
+/*     left: 0; */
+/*     -webkit-transform: translate(0, -50%); */
+    transform: translate(0, -50%);
+}
+
 
 a, button, input, select {
 	pointer-events: auto;
@@ -46,7 +109,7 @@ a, button, input, select {
 }
 
 @media all and ( max-width: 640px ) {
-	.lil-gui.root { 
+	.lil-gui.root {
 		right: auto;
 		top: auto;
 		max-height: 50%;

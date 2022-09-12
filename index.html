@@ -7,9 +7,25 @@
 		<link type="text/css" rel="stylesheet" href="main.css">
 	</head>
 	<body>
-		<div id="info">
-			<a href="https://www.ciaid.co/" target="_blank" rel="noopener">CIAID</a> caldera<br/>
-		</div>
+	  <div id="wrapper">
+	    <div id="navbar" class="navbar">
+	      <!-- <div class="brand"> -->
+	      <!-- 	<\!-- <div class="logos"> -\-> -->
+	      <!-- 	<\!-- </div> -\-> -->
+	      <!-- </div> -->
+	      <a class="logo" href="https://www.ciaid.co/">
+		<img src="./images/ciaid.png" alt="ciaid">
+	      </a>
+	      <div id="buttons" class="buttons"></div>
+	      <a class="logo">
+		<img src="./images/vringenieria.png" alt="vringenieria">
+	      </a>
+	    </div>
+	  </div>
+
+
+		<!-- 	<a href="" target="_blank" rel="noopener">CIAID</a> caldera<br/> -->
+		<!-- </div> -->
 
 		<!-- Import maps polyfill -->
 		<!-- Remove this when import maps will be widely supported -->
@@ -19,7 +35,7 @@
 		  {
 		      "imports": {
 			  "three" : "https://unpkg.com/three@0.143.0/build/three.module.js",
-			  "ARButton": "https://unpkg.com/three@0.143.0/examples/jsm/webxr/ARButton.js",
+			  "ARButton": "./examples/jsm/webxr/ARButton.js",
 			  "GLTFLoader": "https://unpkg.com/three@0.143.0/examples/jsm/loaders/GLTFLoader.js",
 			  "DRACOLoader": "https://unpkg.com/three@0.143.0/examples/jsm/loaders/DRACOLoader.js"
 		      }
@@ -44,12 +60,15 @@
 		      fire: true
 		  }
 
+		  var set;
+
 			init();
 			animate();
-
+		  
 			function init() {
+			    const div_wrapper = document.getElementById( 'wrapper' );
 				const container = document.createElement( 'div' );
-				document.body.appendChild( container );
+			    div_wrapper.appendChild( container );
 
 				scene = new THREE.Scene();
 
@@ -66,17 +85,39 @@
 			    // scene.add( directionalLight );
 
 			    // model
-			    var group = new THREE.Group();
-			    group.position.setZ( -0.3 );
+			    // scene
+			    // -set
+			    // --fire
+			    // --amarillo
+			    // --alum
+			    // --bluetubeswa
+			    // --black
+			    // --gris
+			    var set = new THREE.Group( );
+			    set.name = "set";
+
+			    set.position.setZ( -0.3 );
 			    const scale = 0.1;
-			    group.scale.set( scale, scale, scale );
-			    scene.add( group );
-			    addGLTFModel( 'fire.glb', group );
-			    addGLTFModel( 'amarillo.glb', group );
-			    addGLTFModel( 'alum.glb', group );
-			    addGLTFModel( 'bluetubeswa.glb', group );
-			    addGLTFModel( 'black.glb', group );
-			    addGLTFModel( 'gris.glb', group );
+			    set.scale.set( scale, scale, scale );
+			    scene.add( set );
+
+			    // fire
+			    addGLTFModel( 'fire.glb', set );
+
+			    // amarillo
+			    addGLTFModel( 'amarillo.glb', set );
+
+			    // alum
+			    addGLTFModel( 'alum.glb', set );
+
+			    // bluetubeswa
+			    addGLTFModel( 'bluetubeswa.glb', set );
+
+			    // black
+			    addGLTFModel( 'black.glb', set );
+
+			    // gris
+			    addGLTFModel( 'gris.glb', set );
 
 				//
 
@@ -84,14 +125,22 @@
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				renderer.xr.enabled = true;
+			    
+			    renderer.xr.addEventListener( 'sessionstart', function ( event ) {
+			    	console.log( 'holi' );
+			    } );
+
 				container.appendChild( renderer.domElement );
 
 				//
 
-			    document.body.appendChild( ARButton.createButton( renderer, {
+			    const div_navbar = document.getElementById( "buttons" );
+			    var ar_button = ARButton.createButton( renderer, {
                                 optionalFeatures: ['dom-overlay', 'dom-overlay-for-handheld-ar'],
                                 domOverlay: {root: document.body}
-			    } ) );
+			    } );
+			    ar_button.style.position = 'static';
+			    div_navbar.appendChild( ar_button );
 
 				//
 
@@ -105,15 +154,16 @@
 		      /*
 			Add GLTF model to scene
 		      */
-		      
+
 		      const gltfLoader = new GLTFLoader();
 
 		      const dracoLoader = new DRACOLoader();
 		      dracoLoader.setDecoderPath( './examples/js/libs/draco/' );
 		      gltfLoader.setDRACOLoader( dracoLoader );
-		      
+
 		      gltfLoader.load( './models/' + file, function ( gltf ) {
 			  const model = gltf.scene;
+			  model.name = file;
 
 			  model.traverse( child => {
 			      if ( child.material ) {
@@ -125,15 +175,16 @@
 
 			  render();
 		      } );
-		      
+
 		  }
 
 		  function setupGUI() {
 		      const gui = new dat.GUI();
 		      var h;
 
-		      h = gui.addFolder( 'meshes' );
-		      h.add( config, 'fire' ).name( 'fire' ).onChange( alert( 'holi' ) );
+		      h = gui.addFolder( 'set' );
+
+		      // h.add( config, 'fire' ).name( 'fire' ).onChange( alert( 'holi' ) );
 		  }
 
 			function onWindowResize() {
